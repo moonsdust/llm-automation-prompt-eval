@@ -1,1 +1,4 @@
 # Prompting and Evaluation of Responses with LLMs
+
+# Setup
+Create a .env file and put your OpenAI access token (`API_TOKEN`) and Hugging Face access token (`HUGGING_FACE_ACCESS_TOKEN`) in it. If this is your first time running the program, run the shell script, setup.sh, first using the following command: `sh setup.sh`. This script will create a virtual environment for the program, activate the virtual environment, and then install all necessary dependencies for thr program. Then, run the shell script, run.sh, using the following command: `sh run.sh`. This script will activate the virtual envrionment and run the program. 
