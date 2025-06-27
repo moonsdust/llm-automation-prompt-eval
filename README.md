@@ -1,1 +1,1 @@
-# llm-automation-prompt-eval
+# Prompting and Evaluation of Responses with LLMs
