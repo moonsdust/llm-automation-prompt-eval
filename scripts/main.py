@@ -10,19 +10,18 @@ def main(benchmark_dataset, gpqa_dataset):
     in the benchmark dataset and <gpqa_dataset> dataset, and having the same GPT model 
     evaluate its own response. Using all this information, output a CSV file. 
     """
-    benchmark_dataset = benchmark_dataset["train"]
-    gpqa_dataset = gpqa_dataset["train"]
-
     # Replace values in benchmark dataset 
     benchmark_update(benchmark_dataset)
     
 if __name__ == "__main__":
+    # Number of examples we want from each data set
+    num_of_examples = 10
     # Load in .env file 
     load_dotenv()
     # Log into hugging face and pass it YOUR access token from .env file 
     login(token = os.getenv('HUGGING_FACE_ACCESS_TOKEN'))
-    # Load in datasets
-    benchmark_dataset = load_dataset("openai/gsm8k", "main")
-    gpqa_dataset = load_dataset("Idavidrein/gpqa", "gpqa_diamond")
+    # Load in datasets (Only load in the first 10 rows)
+    benchmark_dataset = load_dataset("openai/gsm8k", "main", split=f'train[:{num_of_examples}]')
+    gpqa_dataset = load_dataset("Idavidrein/gpqa", "gpqa_diamond", split=f'train[:{num_of_examples}]')
     # Pass in dataset to main function
     main(benchmark_dataset, gpqa_dataset)
