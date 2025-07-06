@@ -27,16 +27,16 @@ if __name__ == "__main__":
     benchmark_dataset = load_dataset("openai/gsm8k", "main", split=f'train[:{num_of_examples}]')
     gpqa_dataset = load_dataset("Idavidrein/gpqa", "gpqa_diamond", split=f'train[:{num_of_examples}]')
     # Pass in qualitative-type prompts dataset
-    qualitative_dataset = [ "Write me a paragraph about Charles Darwin", # Vague
+    qualitative_dataset = ["Write me a paragraph about Charles Darwin", # Vague
                       "Write me a paragraph about Charles Darwin's trip to the United States", # Hallucination  
                       "Write me a paragraph about Charles Darwin's trip to Galapagos islands and how it helped him create the theory of evolution", # More focused
                       "Write me a paragraph about how tokens works", # Ambiguity with which field's "tokens" they are referring to
                       "Write be a paragraph about how tokens works in large language models", # More specific in terms of the field 
                       "Come up with paper ideas related to exercise", # General 
                       "Come up with paper ideas related to exercise for a 4th year kinesiology class", # More specific towards 4th year
-                      "Come up with paper ideas related to exercise for a 4th year kinesiology class if I'm interested in focusing on the heart in exercise and reference https://www.functionalkinesiology.co.uk/heart-kinesiology/ to fact-check"  # More tailored
-                      "Write me a paragraph wishing a 8 year kid, happy birthday", # Uses simpler words
-                      "Write me a paragraph wishing a 60 year old person, happy birthday", # Uses complex words
+                      "Come up with paper ideas related to exercise for a 4th year kinesiology class if I'm interested in focusing on the heart in exercise and please reference https://www.functionalkinesiology.co.uk/heart-kinesiology/ to fact-check the paper idea",  # More tailored
+                      "Write me a paragraph wishing a 6 year kid, happy birthday, where the 6 year old kid will be reading it", # Uses simpler words
+                      "Write me a paragraph wishing a 60 year old person, happy birthday, where the 60 year old person will be reading it" # Uses complex words
                       ]
     # Pass in dataset to main function
     main(benchmark_dataset, gpqa_dataset, qualitative_dataset)
