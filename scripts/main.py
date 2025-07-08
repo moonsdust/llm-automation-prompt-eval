@@ -5,7 +5,7 @@ from huggingface_hub import login
 import os
 from dotenv import load_dotenv
 
-def main(benchmark_dataset, gpqa_dataset, qualitative_dataset):
+def main(benchmark_dataset, gpqa_dataset, qualitative_dataset, output_qualitative_file_name):
     """This function begins process of replacing values in <benchmark dataset>,
     automating prompting of different GPT models to answer the prompts 
     in the benchmark dataset, <gpqa_dataset> dataset, <qualitative_dataset> dataset, and having the same GPT model 
@@ -14,9 +14,11 @@ def main(benchmark_dataset, gpqa_dataset, qualitative_dataset):
     # Replace values in benchmark dataset 
     # benchmark_update(benchmark_dataset)
     # Prompt GPT on the custom_dataset
-    prompting_eval_qualitative(qualitative_dataset)
+    prompting_eval_qualitative(qualitative_dataset, output_qualitative_file_name)
     
 if __name__ == "__main__":
+    # Name of output CSV file
+    output_qualitative_file_name = "prompt_eval_quality.csv"
     # Number of examples we want from each data set
     num_of_examples = 10
     # Load in .env file 
@@ -39,4 +41,4 @@ if __name__ == "__main__":
                       "Write me a paragraph wishing a 60 year old person, happy birthday, where the 60 year old person will be reading it" # Uses complex words
                       ]
     # Pass in dataset to main function
-    main(benchmark_dataset, gpqa_dataset, qualitative_dataset)
+    main(benchmark_dataset, gpqa_dataset, qualitative_dataset, output_qualitative_file_name)
