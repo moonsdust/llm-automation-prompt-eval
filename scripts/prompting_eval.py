@@ -2,10 +2,10 @@ from openai import OpenAI
 import os
 import csv
 
-def prompting_eval(a_dataset, output_qualitative_file_name):
-    """In this function, iterate across different GPT models to prompt <a_dataset> a qualitative dataset and have
+def prompting_eval(a_dataset, output_file_name):
+    """In this function, iterate across different GPT models to prompt <a_dataset> a dataset and have
     the GPT model evaluate its response for the following dimensions on a scale of 0 (Worse than expected) to 100 (Better than expected): 
-    quality, accuracy, length, and completeness. Then, output this into a CSV with the specified name <output_qualitative_file_name>."""
+    quality, accuracy, length, and completeness. Then, output this into a CSV with the specified name <output_file_name>."""
     client = OpenAI(api_key=os.getenv('OPENAI_API_TOKEN')) # Insert API token
     gpt_models = ["gpt-3.5-turbo"] # All models to iterate through
     entries = []
@@ -52,7 +52,7 @@ def prompting_eval(a_dataset, output_qualitative_file_name):
         # Write a CSV
         fields = ["Prompt", "Output", "Model", "GPT's Evaluation"]
         # fields = ["Prompt", "Output", "Model"]
-        with open(output_qualitative_file_name, 'w') as csv_file: 
+        with open(output_file_name, 'w') as csv_file: 
             # creating a csv writer object
             the_csv_writer = csv.writer(csv_file)
             # writing the fields
