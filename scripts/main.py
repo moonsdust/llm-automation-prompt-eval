@@ -14,7 +14,7 @@ def main(benchmark_dataset, gpqa_dataset, custom_dataset, output_file_name):
     # Replace values in benchmark dataset 
     # benchmark_update(benchmark_dataset)
     # Prompt GPT on the custom_dataset
-    prompting_eval(qualitative_dataset, output_qualitative_file_name)
+    prompting_eval(custom_dataset, output_file_name)
     
 if __name__ == "__main__":
     # Name of output CSV file
