@@ -1,0 +1,10 @@
+Prompt,Output,Model
+How many significant figures does 6.07 × 10^4 have?,"The number 6.07 × 10^4 has three significant figures: 6, 0, and 7.",gpt-3.5-turbo
+The following is a problem I did in my chem class (Question: How many significant figures does this number have: 4.278g? Answer: 4). What would be the answer for the following then: How many significant figures does 6.07 × 10^4 have?,"The number 6.07 × 10^4 has three significant figures. In scientific notation, all non-zero digits are considered significant. Therefore, the numbers 6, 0, and 7 are significant in this case.",gpt-3.5-turbo
+I do not know how significant figures work. Show your work. The following is a problem I did in my chem class (Question: How many significant figures does this number have: 4.278g? Answer: 4). Question: How many significant figures does 6.07 × 10^4 have?,"Sure, I'd be happy to explain significant figures and help you understand how they work.
+
+Significant figures are the digits in a number that carry meaning, contributing to its precision. When determining the number of significant figures in a given number, you need to consider all the nonzero digits and any zeros between them or after them if they fall after a decimal point.
+
+In the number 6.07 × 10^4, there are three significant figures: 6, 0, and 7. The number 6.07 itself has three significant figures as well. Zeros in scientific notation, as in this case where you have 6.07, are considered to be significant figures because they are positioned between nonzero digits.
+
+Therefore, the number 6.07 × 10^4 has 3 significant figures.",gpt-3.5-turbo

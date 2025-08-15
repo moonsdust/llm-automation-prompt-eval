@@ -2,7 +2,7 @@ from openai import OpenAI
 import os
 import csv
 
-def prompting_eval_qualitative(a_dataset, output_qualitative_file_name):
+def prompting_eval(a_dataset, output_qualitative_file_name):
     """In this function, iterate across different GPT models to prompt <a_dataset> a qualitative dataset and have
     the GPT model evaluate its response for the following dimensions on a scale of 0 (Worse than expected) to 100 (Better than expected): 
     quality, accuracy, length, and completeness. Then, output this into a CSV with the specified name <output_qualitative_file_name>."""
@@ -13,14 +13,15 @@ def prompting_eval_qualitative(a_dataset, output_qualitative_file_name):
         for model in gpt_models: 
             # Prompts
             the_prompt = prompt
-            system_prompt = "Keep your response under 200 words."
+            # system_prompt = "Keep your response under 200 words."
+            system_prompt = ""
             # Construct conversation list
             conversation = [{"role": "system", "content": system_prompt}, {"role": "user", "content": the_prompt}]
             # Get GPT's response
             response = client.chat.completions.create(
                         model=f'{model}',
                         messages=conversation,
-                        max_tokens=150,
+                        max_tokens=400,
                     )
             assistant_reply = response.choices[0].message.content.strip()
             # Append GPT's response to conversation list
@@ -47,8 +48,10 @@ def prompting_eval_qualitative(a_dataset, output_qualitative_file_name):
             print("\n")
             # Append results to entries list (so it can be outputted as a CSV later)
             entries.append([the_prompt, assistant_reply, model, assistant_reply_eval])
+            # entries.append([the_prompt, assistant_reply, model])
         # Write a CSV
         fields = ["Prompt", "Output", "Model", "GPT's Evaluation"]
+        # fields = ["Prompt", "Output", "Model"]
         with open(output_qualitative_file_name, 'w') as csv_file: 
             # creating a csv writer object
             the_csv_writer = csv.writer(csv_file)
