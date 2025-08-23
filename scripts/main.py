@@ -24,7 +24,7 @@ def main(benchmark_dataset, gpqa_dataset, custom_dataset, output_file_name, clea
     
 if __name__ == "__main__":
     # Name of output CSV file
-    output_file_name = "llm_as_a_judge.csv"
+    output_file_name = "prompting_challenge.csv"
     # Number of examples we want from each data set
     num_of_examples = 10
     # Load in .env file 
@@ -56,6 +56,6 @@ if __name__ == "__main__":
                            "You are a CS professor who is good at explaining. What are some methods I can use to check if my function is correct for a Python problem and debug my function? I am currently taking an introduction to Python programming class and I don't know how to debug."]
     cleaned_data_prompts = pd.read_csv("cleaned_data.csv")["eval_prompt"].tolist() # Prompt
     cleaned_data_group = pd.read_csv("cleaned_data.csv")["group"].tolist() # Group
-    cleaned_data_id = pd.read_csv("cleaned_data.csv")["ID"].tolist() # Participant ID
+    cleaned_data_id = pd.read_csv("cleaned_data.csv")["RandomID"].tolist() # Participant ID
     # Pass in dataset to main function
     main(benchmark_dataset, gpqa_dataset, cleaned_data_prompts, output_file_name, cleaned_data_group, cleaned_data_id)

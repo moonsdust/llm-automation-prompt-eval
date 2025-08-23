@@ -6,7 +6,7 @@ def prompting_eval(a_dataset, output_file_name, group = None, pid = None):
     """In this function, iterate across different GPT models to prompt <a_dataset> a dataset and have
     the GPT model evaluate its response for the following dimensions on a scale of 0 (Worse than expected) to 100 (Better than expected): 
     quality, accuracy, length, and completeness. Then, output this into a CSV with the specified name <output_file_name>. 
-    There are also optional prompts <group> and <pid>, which represents the group and participant id, respectively."""
+    There are also optional parameters <group> and <pid>, which represents the group and participant id, respectively."""
     client = OpenAI(api_key=os.getenv('OPENAI_API_TOKEN')) # Insert API token
     gpt_models = ["gpt-4o"] # All models to iterate through
     entries = []
@@ -15,14 +15,14 @@ def prompting_eval(a_dataset, output_file_name, group = None, pid = None):
             # Prompts
             the_prompt = prompt
             # system_prompt = "Keep your response under 200 words."
-            system_prompt = ""
+            system_prompt = "State your final answer at the beginning."
             # Construct conversation list
             conversation = [{"role": "system", "content": system_prompt}, {"role": "user", "content": the_prompt}]
             # Get GPT's response
             response = client.chat.completions.create(
                         model=f'{model}',
                         messages=conversation,
-                        max_tokens=400,
+                        max_tokens=300,
                     )
             assistant_reply = response.choices[0].message.content.strip()
             # Append GPT's response to conversation list
