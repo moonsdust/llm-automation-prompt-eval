@@ -10,10 +10,10 @@ def prompting_eval(a_dataset, output_file_name, group = None, pid = None):
     client = OpenAI(api_key=os.getenv('OPENAI_API_TOKEN')) # Insert API token
     gpt_models = ["gpt-4o"] # All models to iterate through
     entries = []
-    for prompt in a_dataset: 
+    for i in range(len(a_dataset)): 
         for model in gpt_models: 
             # Prompts
-            the_prompt = prompt
+            the_prompt = a_dataset[i]
             # system_prompt = "Keep your response under 200 words."
             system_prompt = "State your final answer at the beginning."
             # Construct conversation list
@@ -49,7 +49,7 @@ def prompting_eval(a_dataset, output_file_name, group = None, pid = None):
             # print("\n")
             # Append results to entries list (so it can be outputted as a CSV later)
             # entries.append([the_prompt, assistant_reply, model, assistant_reply_eval])
-            entries.append([pid, the_prompt, assistant_reply, group])
+            entries.append([pid[i], the_prompt, assistant_reply, group[i]])
         # Write a CSV
         # fields = ["Prompt", "Output", "Model", "GPT's Evaluation"]
         fields = ["ID", "prompt", "output", "group"]
