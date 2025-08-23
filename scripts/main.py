@@ -7,19 +7,20 @@ import os
 from dotenv import load_dotenv
 import pandas as pd
 
-def main(benchmark_dataset, gpqa_dataset, custom_dataset, output_file_name, cleaned_data_group):
+def main(benchmark_dataset, gpqa_dataset, custom_dataset, output_file_name, cleaned_data_group, cleaned_data_id):
     """This function begins process of replacing values in <benchmark dataset>,
     automating prompting of different GPT models to answer the prompts 
     in the benchmark dataset, <gpqa_dataset> dataset, <custom_dataset> dataset, and having the same GPT model 
     evaluate its own response. Depending on the dataset, that is passed it, you can also use LLM as a judge to 
-    evaluate prompt quality. Using all this information, output a CSV file called <output_file_name>. 
+    evaluate prompt quality. The column of groups <cleaned_data_group> and participant IDs <cleaned_data_id>
+    are passed in as well. Using all this information, output a CSV file called <output_file_name>. 
     """
     # Replace values in benchmark dataset 
     # benchmark_update(benchmark_dataset)
     # # Prompt GPT on the custom_dataset
-    # prompting_eval(custom_dataset, output_file_name)
+    prompting_eval(custom_dataset, output_file_name, cleaned_data_group, cleaned_data_id)
     # Use LLM as a judge
-    llm_as_a_judge(custom_dataset, output_file_name, cleaned_data_group)
+    # llm_as_a_judge(custom_dataset, output_file_name, cleaned_data_group)
     
 if __name__ == "__main__":
     # Name of output CSV file
@@ -53,7 +54,8 @@ if __name__ == "__main__":
     #                        "Come up with paper ideas for a grade 10 history class related to Margaret Brown and her life after Titanic."]
     programming_dataset = ["How to make sure my function is correct?",
                            "You are a CS professor who is good at explaining. What are some methods I can use to check if my function is correct for a Python problem and debug my function? I am currently taking an introduction to Python programming class and I don't know how to debug."]
-    llm_as_a_judge_cleaned_data = pd.read_csv("cleaned_data.csv")["eval_prompt"].tolist()
-    llm_as_a_judge_cleaned_data_group = pd.read_csv("cleaned_data.csv")["group"].tolist()
+    cleaned_data_prompts = pd.read_csv("cleaned_data.csv")["eval_prompt"].tolist() # Prompt
+    cleaned_data_group = pd.read_csv("cleaned_data.csv")["group"].tolist() # Group
+    cleaned_data_id = pd.read_csv("cleaned_data.csv")["ID"].tolist() # Participant ID
     # Pass in dataset to main function
-    main(benchmark_dataset, gpqa_dataset, llm_as_a_judge_cleaned_data, output_file_name, llm_as_a_judge_cleaned_data_group)
+    main(benchmark_dataset, gpqa_dataset, cleaned_data_prompts, output_file_name, cleaned_data_group, cleaned_data_id)
