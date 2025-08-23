@@ -1,6 +1,47 @@
 from openai import OpenAI
 import os
 import csv
+import base64
+
+def encode_image(image_path):
+    """This function encodes images"""
+    with open(image_path, "rb") as image_file:
+        return base64.b64encode(image_file.read()).decode("utf-8")
+    
+def extract_values_output(a_dataset, output_file_name, group = None, pid = None):
+    """Extract value from <a_dataset>. This function is for the prompting challenge"""
+    client = OpenAI(api_key=os.getenv('OPENAI_API_TOKEN')) # Insert API token
+    the_model = "gpt-4o-mini" 
+    entries = []
+    for i in range(len(a_dataset)): 
+        # Prompts
+        the_prompt = a_dataset[i]
+        system_prompt = "You are given responses for the number of chickpeas. \
+            Extract the final answer and only return a number for the final answer number of chickpeas.\
+                if no final answer is given, return an empty string."
+        # For prompting challenge: Construct conversation list
+        conversation = [{"role": "system", "content": system_prompt}, 
+                        {"role": "user", "content": a_dataset[i]}]
+        # For prompting challenge: get GPT's response
+        response = client.chat.completions.create(
+                    model=f'{the_model}',
+                    messages=conversation
+                )
+        assistant_reply = response.choices[0].message.content.strip()
+        # Append GPT's response to conversation list
+        conversation.append({"role": "assistant", "content": assistant_reply})
+        print(conversation)
+        print("\n")
+        entries.append([pid[i], the_prompt, assistant_reply, group[i]])
+        # Write a CSV
+        fields = ["ID", "gpt_answer_full", "answer", "group"]
+        with open(output_file_name, 'w') as csv_file: 
+            # creating a csv writer object
+            the_csv_writer = csv.writer(csv_file)
+            # writing the fields
+            the_csv_writer.writerow(fields)
+            # writing the data rows
+            the_csv_writer.writerows(entries)
 
 def prompting_eval(a_dataset, output_file_name, group = None, pid = None):
     """In this function, iterate across different GPT models to prompt <a_dataset> a dataset and have
@@ -12,17 +53,38 @@ def prompting_eval(a_dataset, output_file_name, group = None, pid = None):
     entries = []
     for i in range(len(a_dataset)): 
         for model in gpt_models: 
+            # Only for prompting challenge
+            image_1 = "images/chickpea_bottom.png"
+            image_2 = "images/chickpea_side.png"
+            # Encode image
+            base64_image_1 = encode_image(image_1)
+            base64_image_2 = encode_image(image_2)
+            
             # Prompts
             the_prompt = a_dataset[i]
             # system_prompt = "Keep your response under 200 words."
-            system_prompt = "State your final answer at the beginning."
+            system_prompt = ""
             # Construct conversation list
-            conversation = [{"role": "system", "content": system_prompt}, {"role": "user", "content": the_prompt}]
+            # conversation = [{"role": "system", "content": system_prompt}, {"role": "user", "content": the_prompt}]
+            # For prompting challenge: Construct conversation list
+            conversation = [{"role": "system", "content": system_prompt}, 
+                            {"role": "user", 
+                             "content": [
+                                {"type": "text", "text": the_prompt},
+                                {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{base64_image_1}"}},
+                                {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{base64_image_2}"}}
+                                ]
+                             }]
             # Get GPT's response
+            # response = client.chat.completions.create(
+            #             model=f'{model}',
+            #             messages=conversation,
+            #             max_tokens=300,
+            #         )
+            # For prompting challenge: get GPT's response
             response = client.chat.completions.create(
                         model=f'{model}',
                         messages=conversation,
-                        max_tokens=300,
                     )
             assistant_reply = response.choices[0].message.content.strip()
             # Append GPT's response to conversation list

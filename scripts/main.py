@@ -1,7 +1,7 @@
 from datasets import load_dataset
 from benchmark_update import benchmark_update
 from llm_as_judge import llm_as_a_judge
-from prompting_eval import prompting_eval
+from prompting_eval import prompting_eval, extract_values_output
 from huggingface_hub import login
 import os
 from dotenv import load_dotenv
@@ -18,13 +18,15 @@ def main(benchmark_dataset, gpqa_dataset, custom_dataset, output_file_name, clea
     # Replace values in benchmark dataset 
     # benchmark_update(benchmark_dataset)
     # # Prompt GPT on the custom_dataset
-    prompting_eval(custom_dataset, output_file_name, cleaned_data_group, cleaned_data_id)
+    # prompting_eval(custom_dataset, output_file_name, cleaned_data_group, cleaned_data_id)
+    # Extract value for challenge 
+    extract_values_output(custom_dataset, output_file_name, cleaned_data_group, cleaned_data_id)
     # Use LLM as a judge
     # llm_as_a_judge(custom_dataset, output_file_name, cleaned_data_group)
     
 if __name__ == "__main__":
     # Name of output CSV file
-    output_file_name = "prompting_challenge.csv"
+    output_file_name = "prompting_challenge_answers.csv"
     # Number of examples we want from each data set
     num_of_examples = 10
     # Load in .env file 
@@ -57,5 +59,11 @@ if __name__ == "__main__":
     cleaned_data_prompts = pd.read_csv("cleaned_data.csv")["eval_prompt"].tolist() # Prompt
     cleaned_data_group = pd.read_csv("cleaned_data.csv")["group"].tolist() # Group
     cleaned_data_id = pd.read_csv("cleaned_data.csv")["RandomID"].tolist() # Participant ID
+    
+    # Data for the prompting challenge
+    cleaned_data_outputs_challenge = pd.read_csv("prompting_challenge.csv")["output"].tolist() # output
+    cleaned_data_group_challenge = pd.read_csv("prompting_challenge.csv")["group"].tolist() # Group
+    cleaned_data_id_challenge  = pd.read_csv("prompting_challenge.csv")["ID"].tolist() # Participant ID
+    
     # Pass in dataset to main function
-    main(benchmark_dataset, gpqa_dataset, cleaned_data_prompts, output_file_name, cleaned_data_group, cleaned_data_id)
+    main(benchmark_dataset, gpqa_dataset, cleaned_data_outputs_challenge, output_file_name, cleaned_data_group_challenge, cleaned_data_id_challenge)
