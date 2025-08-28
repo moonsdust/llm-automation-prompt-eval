@@ -7,26 +7,24 @@ import os
 from dotenv import load_dotenv
 import pandas as pd
 
-def main(benchmark_dataset, gpqa_dataset, custom_dataset, output_file_name, cleaned_data_group, cleaned_data_id):
+def main(benchmark_dataset, gpqa_dataset, custom_dataset, cleaned_data_group, cleaned_data_id):
     """This function begins process of replacing values in <benchmark dataset>,
     automating prompting of different GPT models to answer the prompts 
     in the benchmark dataset, <gpqa_dataset> dataset, <custom_dataset> dataset, and having the same GPT model 
     evaluate its own response. Depending on the dataset, that is passed it, you can also use LLM as a judge to 
     evaluate prompt quality. The column of groups <cleaned_data_group> and participant IDs <cleaned_data_id>
-    are passed in as well. Using all this information, output a CSV file called <output_file_name>. 
+    are passed in as well. Using all this information, output CSV files. 
     """
     # Replace values in benchmark dataset 
     # benchmark_update(benchmark_dataset)
     # # Prompt GPT on the custom_dataset
-    # prompting_eval(custom_dataset, output_file_name, cleaned_data_group, cleaned_data_id)
+    prompting_eval(custom_dataset, "prompting_challenge.csv", cleaned_data_group, cleaned_data_id)
     # Extract value for challenge 
-    extract_values_output(custom_dataset, output_file_name, cleaned_data_group, cleaned_data_id)
+    # extract_values_output(custom_dataset, "prompting_challenge_answers.csv", cleaned_data_group, cleaned_data_id)
     # Use LLM as a judge
-    # llm_as_a_judge(custom_dataset, output_file_name, cleaned_data_group)
+    # llm_as_a_judge(custom_dataset, "llm_as_a_judge.csv", cleaned_data_group)
     
 if __name__ == "__main__":
-    # Name of output CSV file
-    output_file_name = "prompting_challenge_answers.csv"
     # Number of examples we want from each data set
     num_of_examples = 10
     # Load in .env file 
@@ -61,9 +59,9 @@ if __name__ == "__main__":
     cleaned_data_id = pd.read_csv("cleaned_data.csv")["RandomID"].tolist() # Participant ID
     
     # Data for the prompting challenge
-    cleaned_data_outputs_challenge = pd.read_csv("prompting_challenge.csv")["output"].tolist() # output
-    cleaned_data_group_challenge = pd.read_csv("prompting_challenge.csv")["group"].tolist() # Group
-    cleaned_data_id_challenge  = pd.read_csv("prompting_challenge.csv")["ID"].tolist() # Participant ID
+    # cleaned_data_outputs_challenge = pd.read_csv("prompting_challenge.csv")["output"].tolist() # output
+    # cleaned_data_group_challenge = pd.read_csv("prompting_challenge.csv")["group"].tolist() # Group
+    # cleaned_data_id_challenge  = pd.read_csv("prompting_challenge.csv")["ID"].tolist() # Participant ID
     
     # Pass in dataset to main function
-    main(benchmark_dataset, gpqa_dataset, cleaned_data_outputs_challenge, output_file_name, cleaned_data_group_challenge, cleaned_data_id_challenge)
+    main(benchmark_dataset, gpqa_dataset, cleaned_data_prompts, cleaned_data_group, cleaned_data_id)
